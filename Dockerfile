@@ -1,18 +1,22 @@
-FROM python:3.6.9-alpine
+FROM thinkwhere/gdal-python:3.6
 
+# Environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Install common prerequisites for CI
-RUN apk update && \
-  apk add \
-    --no-cache \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-    build-base \
-    gdal \
-    git \
-    libffi-dev \
-    musl-dev \
-    openssl-dev \
-    postgresql-libs \
-    postgresql-dev \
-    py-gdal
+# Add nc dependency
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y \
+      libarmadillo-dev \
+      libgdal20 \
+      libgdal-dev \
+      libhdf4-alt-dev \
+      libhdf5-dev \
+      libhdf5-103 \
+      libnetcdf-dev \
+      libsqlite3-mod-spatialite \
+      netcat \
+      spatialite-bin \
+ && rm -rf /var/lib/apt/lists/* \
+ && apt-get clean
